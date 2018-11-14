@@ -20,6 +20,7 @@ function readFile(file)
 	return textByLine;
 }
 
+//input:
 function returnCities(matrix)
 {
 	var cities = [];
@@ -56,6 +57,8 @@ function str2Int(matrix)
 	return matrix;
 }
 
+//input: distance matrix and starting point
+//
 function nearNeigh(matrix, start)
 {
 	var visited = [];
@@ -87,6 +90,8 @@ function nearNeigh(matrix, start)
 	return(solution);
 }
 
+//input: distance matrix
+//output: a randomized route matrix
 function randomSolution(matrix)
 {
 	var visited = [];
@@ -111,6 +116,9 @@ function randomSolution(matrix)
 	return(solution);
 }
 
+//input: route matrix and vector of city names
+//       for use with Bundesliga.csv
+//output: prints cities and distances and sum total
 function printCities(vector, cities)
 {
 	var sum = 0;
@@ -122,6 +130,8 @@ function printCities(vector, cities)
 	console.log("Total Distance: ",sum);
 }
 
+//input: route
+//output: prints stops and distances
 function printAnswer(vector)
 {
 	console.log(vector);
@@ -134,6 +144,8 @@ function printAnswer(vector)
 	console.log("Total Distance: ",sum);
 }
 
+//input: route matrix
+//output: sum of distances
 function totalDistance(vector)
 {
 	var sum = 0;
@@ -144,6 +156,8 @@ function totalDistance(vector)
 	return sum;
 }
 
+//input: route and swap indices
+//output: swapped route
 function twoOptSwap(route, i, k)
 {
 	var diff = ((k+1)-i)/2;
@@ -162,6 +176,7 @@ function twoOptSwap(route, i, k)
 		route[k-add] = temp;
 		add++
 	}
+	return route;
 }
 
 //input: distance matrix and route order
@@ -183,10 +198,15 @@ function findDistance(matrix, route)
 	return newRoute;
 }
 
+//input: distance matrix, route matrix with a
+//       non-optimized route
+//output: optimized route with distances.
+//notes
 function twoOptNewRoute(matrix, route)
 {
 	console.log("twoOptNewRoute");
 	var len = matrix.length;
+	var prevRoute = route;
 	console.log("length: ", len);
 	for (var i = 0; i<len; i++)
 	{
@@ -194,9 +214,9 @@ function twoOptNewRoute(matrix, route)
 		for (var k = len-1; k>(i+1); k--)
 		{
 			console.log("\tk: ",k);
-			var tryThis = twoOptSwap(route, i, k)
+			var tryThis = twoOptSwap(prevRoute, i, k)
 			console.log(tryThis);
-			findDistance(matrix, tryThis);
+			route = findDistance(matrix, tryThis);
 			printAnswer(route);
 		}
 	}
