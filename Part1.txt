@@ -7,3 +7,4 @@ heldKarp(cities, start)
       for each city in cities, unless the city is start
         // reduce the set of cities that are unvisited by one (the old start), set the new start, add on the distance from old start to new start
         heldKarp(cities - start, c) + distance from start to c
+test
