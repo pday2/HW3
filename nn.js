@@ -20,7 +20,7 @@ function readFile(file)
 	return textByLine;
 }
 
-//input:
+//input: for use with Bundesliga.csv
 function returnCities(matrix)
 {
 	var cities = [];
@@ -31,6 +31,7 @@ function returnCities(matrix)
 	return cities;
 }
 
+//input: for use with Bundesliga.csv
 function returnDist(matrix)
 {
 	var distances = [];
@@ -45,6 +46,8 @@ function returnDist(matrix)
 	return distances;
 }
 
+//input: matrix of strings as read in from csv
+//output: matrix of integers
 function str2Int(matrix)
 {
 	for (var i = 0; i<matrix.length; i++)
@@ -58,22 +61,32 @@ function str2Int(matrix)
 }
 
 //input: distance matrix and starting point
-//
+//output: a route solution
+//        solution[i][0] = 'city'
+//		  solution[i][1] = distance from last city
 function nearNeigh(matrix, start)
 {
 	var visited = [];
 	var solution = [];
 	var current = start;
+	//update list of visited cities with the start city
 	visited.push(current);
+	//update solution with start city and distance 0
 	solution.push([current,0]);
+	//loop while # of visited cities is less than 
+	//total number of cities
 	while (visited.length<matrix.length)
 	{
-		//console.log("visited: ", visited);
+		//initialize minimum to infinity
 		var min = Infinity;
+		//initialize minIndex to current city 
+		//- just a random choice could be anything
 		var minIndex = current;
+		//loop over all cities current
 		for (var i = 0; i<matrix.length; i++)
 		{
-			//console.log("i: ",i, "\t\tcurrent: ",current);
+			//if distance to city i is less than min and i has not
+			//been visited then update min distance from current
 			if (matrix[current][i]<min && visited.indexOf(i)==-1)
 			{
 				min = matrix[current][i];
@@ -81,10 +94,14 @@ function nearNeigh(matrix, start)
 				//console.log("min: ",min, "\t\tminIndex: ",minIndex);
 			}
 		}
+		//update current to the closest city to previous current that 
+		//hadn't been visited as found by previous loop
 		current = minIndex;
+		//put min city index and min distance into array next
 		var next = [minIndex,min];
-		//console.log(next);
+		//push this pair onto solution
 		solution.push(next);
+		//push min city index onto list of visited cities
 		visited.push(minIndex);
 	}
 	return(solution);
@@ -92,11 +109,13 @@ function nearNeigh(matrix, start)
 
 //input: distance matrix
 //output: a randomized route matrix
+//note: fixed - problem was with my implementation of Math.random
 function randomSolution(matrix)
 {
 	var visited = [];
 	var solution = [];
-	var current = Math.floor(Math.random() * 18);
+	var len = matrix.length;
+	var current = Math.floor(Math.random() * len);
 	visited.push(current);
 	solution.push([current,0]);
 	while (visited.length<matrix.length)
@@ -104,7 +123,7 @@ function randomSolution(matrix)
 		for (var i = 0; i<matrix.length; i++)
 		{
 		    do {
-				var rdm = Math.floor(Math.random() * 18);
+				var rdm = Math.floor(Math.random() * len);
 			}
 			while (visited.indexOf(rdm)!=-1);
 		}
@@ -131,7 +150,7 @@ function printCities(vector, cities)
 }
 
 //input: route
-//output: prints stops and distances
+//output: prints cities and distances
 function printAnswer(vector)
 {
 	console.log(vector);
@@ -201,7 +220,7 @@ function findDistance(matrix, route)
 //input: distance matrix, route matrix with a
 //       non-optimized route
 //output: optimized route with distances.
-//notes
+//notes... not quite done yet???
 function twoOptNewRoute(matrix, route)
 {
 	console.log("twoOptNewRoute");
@@ -228,20 +247,27 @@ function twoOptNewRoute(matrix, route)
 var file = "five_d.csv";
 var distances = readFile(file);
 console.log(distances);
+
+//This is for Bundesliga.csv - you can igonore or remove
 /* if ((typeof distances[1][0]) == "string")
 {
 	var cities = returnCities(distances);
 	distances = returnDist(distances);
 } */
-//var answer = randomSolution(distances);
-//console.log(answer);
-//printCities(answer, cities);
+
 
 distances = str2Int(distances);
 var answer = nearNeigh(distances, 0);
+
+//testing randomSolution - looks like it works now!!!
+var answer2 = randomSolution(distances, 0);
+console.log("Random Solution");
+printAnswer(answer2);
+console.log();
+
+
 //var answer = randomSolution(distances);
 //printAnswer(answer);
 
-//var test = [[0,0], [1,10], [2,20], [3,30], [4,40], [5,50], [6,60], [7,70], [8,80], [9,90]];
 twoOptNewRoute(distances, answer);
 
