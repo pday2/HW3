@@ -15,21 +15,15 @@ function kthpermutation(array, k)
 	for (var i = array.length-1; i>=0; i--)
 	{
 		var quotient = parseInt(k/factorial(i));
-		//console.log("Quotient: ", quotient);
 		var remainder = parseInt(k%factorial(i));
-		//console.log("Remainder: ", remainder);
 		result.push(array[quotient]);
-		
-		var temp = array[quotient];
-		
 		array = (array.slice(0,quotient)).concat(array.slice(quotient+1));
-		
 		k = remainder;
 	}
 	return result;
 }
 
-var arry = [1,2,3,4];
+var arry = [0,1,2,3];
 for (var i = 0; i<factorial(arry.length); i++)
 {
 	console.log(kthpermutation(arry, i));
