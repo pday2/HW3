@@ -288,7 +288,6 @@ function reduceDistMatrix(city, distMatrix)
 
 function distLookup(city1, city2)
 {
-	console.log("distLookup - city1: ", city1, "\tcity2: ", city2);
 	var len = distances.length;
 	if (city1 >= len)
 	{
@@ -300,6 +299,7 @@ function distLookup(city1, city2)
 	}
 	else
 	{
+		console.log("distLookup - city1: ", city1, "\tcity2: ", city2, "\tDIST: ",distances[city1][city2]);
 	    return distances[city1][city2];
 	}
 	return;
@@ -308,11 +308,14 @@ function distLookup(city1, city2)
 function subset(cities, remove)
 {
 	var newArray = [];
+	console.log("--CITIES: ", cities,"\t REMOVE: ",remove);
 	for (var i = 0; i<cities.length; i++)
 	{
 		newArray[i] = cities[i];
 	}
-	newArray.splice(remove, 1);
+	var index = newArray.indexOf(remove);
+	newArray.splice(index, 1);
+	console.log("--NEWARR: ", newArray,"\t REMOVE: ",remove);
 	return newArray;
 }
 
@@ -351,6 +354,7 @@ function heldKarp(cities, start)
 	}
 	if (cities.length == 2)
 	{
+		console.log("2- CITIES: ",cities, "\tSTART: ",start);
 		return distLookup(cities[0], cities[1]);
 	}
 	else
@@ -366,8 +370,6 @@ function heldKarp(cities, start)
 				var distSC = distLookup(start, i);
 				//console.log("distSC: ", distSC, "\tStart: ", start, "\tcity: ", i);
 				var newSet = subset(cities, start);
-				//result = Math.min(result, heldKarp(newSet, i));
-				//result = Math.min(result, heldKarp(newSet, i) + distSC);
 				result = Math.min(result, heldKarp(newSet, i) + distSC);
 			}
 		}
@@ -393,17 +395,17 @@ function createCitiesNotVisited(len)
 //MAIN----------------------------------------
 //var file = "att48_d.csv";
 //var file = "18_city.csv";
-var file = "five_d.csv";
-var distances = readFile(file);
-distances = str2Int(distances);
-var theLength = distances.length;
-/* var distances = [ [ 0, 3, 4, 2, 7 ],
-  [ 3, 0, 4, 6, 3 ],
-  [ 4, 4, 0, 5, 8 ],
-  [ 2, 6, 5, 0, 6 ],
-  [ 7, 3, 8, 6, 0 ] ]; */
+//var file = "five_d.csv";
+//var distances = readFile(file);
+//distances = str2Int(distances);
+
+var distances = [ [ 0, 3, 4, 2, 7 ],
+                  [ 3, 0, 4, 6, 3 ],
+                  [ 4, 4, 0, 5, 8 ],
+                  [ 2, 6, 5, 0, 6 ],
+                  [ 7, 3, 8, 6, 0 ] ];
 
 var cache = [];
-var dist = heldKarp(createCitiesNotVisited(distances.length), 0);
+var dist = heldKarp(createCitiesNotVisited(distances.length), 3);
 
 console.log(dist);
