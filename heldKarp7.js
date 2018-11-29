@@ -305,6 +305,7 @@ function distLookup(city1, city2)
 	return;
 }
 
+//Removes remove from cities and returns new array
 function subset(cities, remove)
 {
 	var newArray = [];
@@ -352,6 +353,7 @@ function heldKarp(cities, start)
 	{
 		return;
 	}
+	
 	if (cities.length == 2)
 	{
 		console.log("2- CITIES: ",cities, "\tSTART: ",start);
@@ -364,13 +366,13 @@ function heldKarp(cities, start)
 		for (var i = 0; i < cities.length; i++)
 		{
 			//unless it is start
-			if (i != start)
+			if (cities[i] != start)
 			{
-				//console.log("i: ", i, "\tstart: ", start);
-				var distSC = distLookup(start, i);
-				//console.log("distSC: ", distSC, "\tStart: ", start, "\tcity: ", i);
+				console.log("i: ", i, "\tstart: ", start);
 				var newSet = subset(cities, start);
-				result = Math.min(result, heldKarp(newSet, i) + distSC);
+				var distSC = distLookup(start, cities[i]);
+				console.log("distSC: ", distSC, "\tStart: ", start, "\tcity: ", cities[i]);
+				result = Math.min(result, heldKarp(newSet, cities[i]) + distSC);
 			}
 		}
 		cache[key][start] = result;
@@ -406,6 +408,6 @@ var distances = [ [ 0, 3, 4, 2, 7 ],
                   [ 7, 3, 8, 6, 0 ] ];
 
 var cache = [];
-var dist = heldKarp(createCitiesNotVisited(distances.length), 3);
+var dist = heldKarp(createCitiesNotVisited(distances.length), 4);
 
 console.log(dist);
