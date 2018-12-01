@@ -1,5 +1,5 @@
 //Peter Day (W09709121)
-//Jordan Ruckle
+//Jordan Ruckle (W08264328)
 //HW3 - Travelling Salesman
 //11/30/2018
 //COSC 3020
